@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.noteappfirebase.R
+import com.example.noteappfirebase.components.Alert
 import com.example.noteappfirebase.viewmodel.LoginViewModel
 
 @Composable
@@ -34,12 +35,19 @@ fun RegisterView(navController: NavController, loginVM: LoginViewModel){
         modifier = Modifier.fillMaxSize()
     ) {
         var email by remember { mutableStateOf("") }
+        var username by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
-        var Confirmpassword by remember { mutableStateOf("") }
         Image(
             painter = painterResource(id = R.drawable.register),
             contentDescription = "",
             modifier = Modifier.size(width = 200.dp, height = 250.dp)
+        )
+        OutlinedTextField(value = username,
+            onValueChange ={username = it},
+            label = { Text(text = " UserName") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 30.dp, end = 30.dp)
         )
 
         OutlinedTextField(value = email,
@@ -60,20 +68,25 @@ fun RegisterView(navController: NavController, loginVM: LoginViewModel){
                 .padding(start = 30.dp, end = 30.dp)
         )
 
-        OutlinedTextField(value = Confirmpassword,
-            onValueChange ={Confirmpassword = it},
-            label = { Text(text = "Confirm Password") },
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 30.dp, end = 30.dp)
-        )
         Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = { /*TODO*/ }, modifier = Modifier
+        Button(onClick = {
+                         loginVM.createUaer(email,username,password){
+                             navController.navigate("Home")
+                         }
+        }, modifier = Modifier
             .fillMaxWidth()
             .padding(start = 30.dp, end = 30.dp)) {
-            Text(text ="Registrar" )
+            Text(text ="Registrarse" )
+        }
+
+        if (loginVM.showAlert) {
+            Alert(
+                title = "Alerta",
+                message = "Nose Guardo el Usuario",
+                confirmText = "Aceptar",
+                onConfirmClick = { loginVM.closeAlert() }) {
+
+            }
         }
     }
 }
