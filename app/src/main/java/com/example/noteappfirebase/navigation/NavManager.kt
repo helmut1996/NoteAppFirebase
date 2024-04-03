@@ -8,6 +8,7 @@ import com.example.noteappfirebase.viewmodel.LoginViewModel
 import com.example.noteappfirebase.viewmodel.NotesViewModel
 import com.example.noteappfirebase.views.login.SplashScreen
 import com.example.noteappfirebase.views.login.TabsView
+import com.example.noteappfirebase.views.notes.AddNotesView
 import com.example.noteappfirebase.views.notes.HomeView
 
 @Composable
@@ -24,6 +25,9 @@ fun NavManager(loginVM:LoginViewModel, notesVM:NotesViewModel){
 
         composable("Home"){
             HomeView(notesVM,navController)
+        }
+        composable("AddNoteView"){
+            AddNotesView(navController,notesVM)
         }
     }
 }
